@@ -51,7 +51,7 @@ nav a {
     height: 100%;
     width: 0;
     position: fixed;
-    z-index: 1;
+    z-index: 100;
     top: 0;
     left: 0;
     background-color: ghostwhite;
@@ -85,6 +85,7 @@ nav a {
 #main {
     transition: margin-left .5s;
     padding: 20px;
+    z-index: 0;
 }
 
 @media screen and (max-height: 450px) {
@@ -189,4 +190,9 @@ button {
 *:before,
 *:after {
     box-sizing: border-box;
+}
+.icon{
+    color: #fff;
+    text-decoration: none;
+    margin: 5px;
 }

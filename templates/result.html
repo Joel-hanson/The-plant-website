@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>The-Plant</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="{{ url_for('static',filename='css/style.css')}}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed" rel="stylesheet">
+</head>
+
+<body>
+    <div id="mySidenav">
+    </div>
+    <nav>
+        <i onclick="location.href='/'" class="material-icons">arrow_back</i><span>The plant</span>
+    </nav>
+    <div class="container">
+        <div id="copy">
+        </div>
+    </div>
+    <script src="{{url_for('static', filename='js/index.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='test.json')}}"></script>
+    <script>
+        function loadJSON(callback) {
+
+            var xobj = new XMLHttpRequest();
+            xobj.overrideMimeType("application/json");
+            xobj.open('GET', 'static/test.json', true); // Replace 'my_data' with the path to your file
+            xobj.onreadystatechange = function () {
+                if (xobj.readyState == 4 && xobj.status == "200") {
+                    // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+                    callback(xobj.responseText);
+
+                }
+            };
+            xobj.send(null);
+        }
+
+
+
+        function init() {
+            loadJSON(function (response) {
+                // Parse JSON string into object
+                var actual_JSON = JSON.parse(response.substring(0, response.length - 2) + "]");
+                console.log(actual_JSON);
+                for (i = 0; i <= 4; i++) {
+                    var line = document.createElement("p");
+                    var span = document.createElement("span");
+
+                    line.innerHTML = actual_JSON[i].name;
+                    span.innerHTML = actual_JSON[i].score;
+                    document.getElementById("copy").appendChild(line);
+                    document.getElementById("copy").appendChild(span);
+
+                }
+            });
+        }
+        window.onload = function () {
+            init();
+        };
+    </script>
+</body>
+
+</html>

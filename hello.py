@@ -10,15 +10,18 @@ ALLOWED_EXTENSIONS = set(['jpg'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 def get():
-    with open('test.log', 'w') as f:
+    
+    with open('static/test.json', 'w') as f:
+        f.write("[")
         process = subprocess.Popen('python label_image.py upload/test.jpg',shell=True, stdout=subprocess.PIPE)
         for line in iter(process.stdout.readline, ''):
             sys.stdout.write(line)
-            f.write(line)
+            f.write('{"name":"'+line.split("(")[0]+'","score":"'+line.split("(")[1].replace(")","")[:-1]+'"},')
+        f.write("]")
 
-
-    return hello
+    return redirect("/result")
 
 
 
@@ -52,6 +55,16 @@ def index():
     """ Displays the index page accessible at '/'
     """
     return render_template('index.html')
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/result')
+def result():
+    """ Displays the index page accessible at '/'
+    """
+    return render_template('result.html')
 
 def allowed_file(filename):
     return '.' in filename and \
